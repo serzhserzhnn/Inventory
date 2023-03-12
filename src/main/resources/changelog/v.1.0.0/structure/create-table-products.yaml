@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-products
+      author: serzh_serzh
+      changes:
+        - tagDatabase:
+            tag: create-things
+        - createTable:
+            tableName: things
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  #                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: location
+                  type: text
+              - column:
+                  name: category
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_category_things
+                    references: category(id)
+              - column:
+                  name: quantity
+                  type: int
+              - column:
+                  name: date_start
+                  type: text
+              - column:
+                  name: date_end
+                  type: text
+  - changeSet:
+      id: addAutoIncrement
+      author: serzh_serzh
+      changes:
+        - addAutoIncrement:
+            columnDataType: int
+            columnName: id
+            defaultOnNull: false
+            generationType: ALWAYS
+            incrementBy: 1
+            startWith: 100
+            tableName: things

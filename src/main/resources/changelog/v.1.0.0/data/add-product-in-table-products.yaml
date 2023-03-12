@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-products
+      author: serzh_serzh
+      changes:
+        - insert:
+            tableName: things
+            columns:
+              - column:
+                  name: name
+                  value: Молоко ЭкоНива ультрапастеризованное 2.5%, 1л БЗМЖ
+              - column:
+                  name: description
+                  value: Ультрапастеризованное молоко ЭкоНива 2,5 % изготавливается из молока высшего сорта с наших собственных ферм. Продукт проходит процесс обработки температурой свыше 100 C — ультрапастеризацию, благодаря чему в нём уничтожаются вредные микроорганизмы.
+              - column:
+                  name: location
+                  value: Холодильник
+              - column:
+                  name: category
+                  value: 3
+              - column:
+                  name: quantity
+                  value: 10
+              - column:
+                  name: date_start
+                  value: 2019-03-11
+              - column:
+                  name: date_end
+                  value: 2019-03-21
+        - insert:
+            tableName: things
+            columns:
+              - column:
+                  name: name
+                  value: Левомеколь
+              - column:
+                  name: description
+                  value: Мазь наружного применения
+              - column:
+                  name: location
+                  value: Шкаф прихожая
+              - column:
+                  name: category
+                  value: 1
+              - column:
+                  name: quantity
+                  value: 1
+              - column:
+                  name: date_start
+                  value: 2018-05-11
+              - column:
+                  name: date_end
+                  value: 2022-05-11

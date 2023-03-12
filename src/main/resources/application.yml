@@ -1,0 +1,14 @@
+server:
+    port: 8087
+spring:
+    datasource:
+        password: postgres
+        url: jdbc:postgresql://localhost/inventoryservice
+        username: postgres
+    jpa:
+        generate-ddl: false
+        hibernate:
+            ddl-auto: none
+        show-sql: true
+    liquibase:
+        change-log: classpath:changelog/db.changelog-master.yaml
