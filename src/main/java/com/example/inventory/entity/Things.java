@@ -1,9 +1,6 @@
 package com.example.inventory.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +10,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Things {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +24,10 @@ public class Things {
     private String dateStart;
     @Column(name = "date_end")
     private String dateEnd;
+
+    public Things(String name, String description, Integer category) {
+        this.name = name;
+        this.description = description;
+        this.category = category;
+    }
 }

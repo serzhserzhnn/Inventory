@@ -3,6 +3,9 @@ package com.example.inventory.service;
 import com.example.inventory.entity.Things;
 import com.example.inventory.repository.ThingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +23,7 @@ public class ThingsServiceImp implements ThingsService {
 
     @Override
     public Optional<Things> getId(int id) {
-        Optional<Things> thing = thingsRepository.findById(id);
-        return thing;
+        return thingsRepository.findById(id);
     }
 
     @Override
@@ -30,27 +32,32 @@ public class ThingsServiceImp implements ThingsService {
     }
 
     @Override
-    public List<Things> findAllByCategory(int category) {
-        return thingsRepository.findAllByCategory(category);
+    public Page<Things> getAll(Pageable paging) {
+        return thingsRepository.findAll(paging);
     }
 
     @Override
-    public List<Things> findSearch(String name) {
-        return thingsRepository.findByNameContainingIgnoreCase(name);
+    public Page<Things> findAllByCategory(int category, Pageable paging) {
+        return thingsRepository.findAllByCategory(category, paging);
     }
 
-    public List<Things> findSearchCategory(String name, Integer category) {
-        return thingsRepository.findByNameContainingIgnoreCaseAndCategory(name, category);
+    @Override
+    public Page<Things> findByNameContaining(String name, Pageable paging) {
+        return thingsRepository.findByNameContainingIgnoreCase(name, paging);
+    }
+
+    public Page<Things> findSearchCategory(Integer category, String name, Pageable paging) {
+        return thingsRepository.findByNameContainingIgnoreCaseAndCategory(name, category, paging);
     }
 
     @Override
     public void create(Things things) {
-
+        thingsRepository.save(things);
     }
 
     @Override
     public void update(Things things) {
-
+        thingsRepository.save(things);
     }
 
     @Override

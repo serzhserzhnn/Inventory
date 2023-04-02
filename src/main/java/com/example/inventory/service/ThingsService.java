@@ -1,6 +1,8 @@
 package com.example.inventory.service;
 
 import com.example.inventory.entity.Things;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,11 +12,13 @@ public interface ThingsService {
 
     List<Things> getAll();
 
-    List<Things> findAllByCategory(int category);
+    Page<Things> getAll(Pageable paging);
 
-    List<Things> findSearch(String name);
+    Page<Things> findByNameContaining(String name, Pageable paging);
 
-    List<Things> findSearchCategory(String name, Integer category);
+    Page<Things> findAllByCategory(int category, Pageable paging);
+
+    Page<Things> findSearchCategory(Integer category, String name, Pageable paging);
 
     void create(Things things);
 

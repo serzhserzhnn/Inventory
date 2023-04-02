@@ -3,9 +3,13 @@ package com.example.inventory.service;
 import com.example.inventory.entity.Category;
 import com.example.inventory.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.security.Key;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -36,5 +40,10 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public void delete(int id) {
         categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public void update(Category category) {
+        categoryRepository.save(category);
     }
 }

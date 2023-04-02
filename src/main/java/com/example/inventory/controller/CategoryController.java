@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.Valid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,51 +34,53 @@ public class CategoryController {
      *
      * @return JSON-массив {@link Category}
      */
-//    @GetMapping(value = "/allCategory", produces = "application/json;charset=UTF-8")
-//    public ResponseEntity<List<Category>> getCategories() {
-//        return new ResponseEntity<>(categoryService.getCategories(), HttpStatus.OK);
-//    }
+
     @GetMapping(value = "/allCategory", produces = "application/json;charset=UTF-8")
-    public ResponseEntity<List<Category>> getCategories() { //@RequestParam(required = false) String title
+    public ResponseEntity<List<Category>> getCategories() {
         try {
-            List<Category> categoryList = new ArrayList<>();
 
-            //if (title == null)
-            categoryService.getCategories().forEach(categoryList::add);
-//            else
-//                tutorialRepository.findByTitleContaining(title).forEach(tutorials::add);
-
+            List<Category> categoryList = new ArrayList<>(categoryService.getCategories());
             if (categoryList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             HttpHeaders headers = new HttpHeaders();
-            //headers.add("Content-Type", "application/json; charset=UTF-8");
-            //headers.add("Access-Control-Allow-Origin", "http://localhost:3000");
+
             return new ResponseEntity<>(categoryList, headers, HttpStatus.OK);
-            //return (new ResponseEntity<Map<String, Object>>(json, headers, HttpStatus.OK));
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/category/{id}")
     public ResponseEntity<Category> getTutorialById(@PathVariable("id") int id) {
         Optional<Category> tutorialData = categoryService.getId(id);
-        if (tutorialData.isPresent()) {
-            return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return tutorialData.map(category -> new ResponseEntity<>(category, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping(value = "/category")
-    public ResponseEntity<Category> create(@RequestBody Category category) {
+    @PostMapping("/category")
+    public ResponseEntity<Category> create(@Valid Category category) {
         try {
+            System.out.println(category.toString());
+            System.out.println(category.getName());
             categoryService.create(new Category(category.getName()));
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/category/{id}")
+    public ResponseEntity<Category> update(@PathVariable("id") int id, Category category) {
+        if (categoryService.getId(id).isPresent()) {
+            System.out.println(category.getName());
+            System.out.println(category.getId());
+            System.out.println(category.toString());
+            categoryService.update(category);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
