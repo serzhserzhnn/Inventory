@@ -60,10 +60,8 @@ public class CategoryController {
     }
 
     @PostMapping("/category")
-    public ResponseEntity<Category> create(@Valid Category category) {
+    public ResponseEntity<Category> create(@Valid @RequestBody Category category) {
         try {
-            System.out.println(category.toString());
-            System.out.println(category.getName());
             categoryService.create(new Category(category.getName()));
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
@@ -72,11 +70,9 @@ public class CategoryController {
     }
 
     @PutMapping("/category/{id}")
-    public ResponseEntity<Category> update(@PathVariable("id") int id, Category category) {
+    public ResponseEntity<Category> update(@PathVariable("id") int id,
+                                           @Valid @RequestBody Category category) {
         if (categoryService.getId(id).isPresent()) {
-            System.out.println(category.getName());
-            System.out.println(category.getId());
-            System.out.println(category.toString());
             categoryService.update(category);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
