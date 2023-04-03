@@ -118,11 +118,25 @@ public class ThingsController {
     }
 
     @PostMapping("/thing_add")
-    public ResponseEntity<Things> create(@Valid Things things) {
+    public ResponseEntity<Things> create(@Valid @RequestBody Things things) {
         try {
-            System.out.println(things.toString());
             thingsService.create(new Things(things.getName(), things.getDescription(), things.getCategory()));
             return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/thing/{id}")
+    public ResponseEntity<Things> update(@PathVariable("id") int id,
+                                         @RequestBody Things things) {
+        try {
+            if (thingsService.getId(id).isPresent()) {
+                thingsService.update(things);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

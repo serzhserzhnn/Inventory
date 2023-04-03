@@ -3,6 +3,7 @@ package com.example.inventory.service;
 import com.example.inventory.entity.Category;
 import com.example.inventory.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public List<Category> getCategories() {
-        return categoryRepository.findAll();
+        return categoryRepository.findAll(Sort.by("name"));
     }
 
     @Override
