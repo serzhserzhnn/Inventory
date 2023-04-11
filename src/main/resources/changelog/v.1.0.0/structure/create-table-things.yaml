@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: create-products
+      id: create-things
       author: serzh_serzh
       changes:
         - tagDatabase:
@@ -10,8 +10,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: int
-                  #                  autoIncrement: true
+                  type: varchar(100)
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -27,28 +26,33 @@ databaseChangeLog:
               - column:
                   name: category
                   type: int
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_category_things
-                    references: category(id)
               - column:
                   name: quantity
                   type: int
+                  defaultValue: 1
               - column:
                   name: date_start
                   type: text
+                  defaultValue: 9999-12-31
               - column:
                   name: date_end
                   type: text
+                  defaultValue: 9999-12-31
+              - column:
+                  name: user_id
+                  type: text
   - changeSet:
-      id: addAutoIncrement
+      id: addForeignKeyConstraint
       author: serzh_serzh
       changes:
-        - addAutoIncrement:
-            columnDataType: int
-            columnName: id
-            defaultOnNull: false
-            generationType: ALWAYS
-            incrementBy: 1
-            startWith: 100
-            tableName: things
+        - addForeignKeyConstraint:
+            baseColumnNames: category
+            baseTableName: things
+            constraintName: fk_category_things
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: category
+            validate: true

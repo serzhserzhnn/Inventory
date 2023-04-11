@@ -6,9 +6,10 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface ThingsService {
-    Optional<Things> getId(int id);
+    Optional<Things> getId(UUID id);
 
     List<Things> getAll();
 
@@ -24,5 +25,5 @@ public interface ThingsService {
 
     void update(Things things);
 
-    void delete(int id);
+    void delete(UUID id);
 }

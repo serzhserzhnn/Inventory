@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ThingsServiceImp implements ThingsService {
@@ -21,7 +22,7 @@ public class ThingsServiceImp implements ThingsService {
     }
 
     @Override
-    public Optional<Things> getId(int id) {
+    public Optional<Things> getId(UUID id) {
         return thingsRepository.findById(id);
     }
 
@@ -60,7 +61,7 @@ public class ThingsServiceImp implements ThingsService {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(UUID id) {
         thingsRepository.deleteById(id);
     }
 }

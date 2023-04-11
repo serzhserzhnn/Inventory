@@ -9,17 +9,11 @@ databaseChangeLog:
             tableName: category
             columns:
               - column:
-                  name: id
-                  value: 1
-              - column:
                   name: name
                   value: Лекарства
         - insert:
             tableName: category
             columns:
-              - column:
-                  name: id
-                  value: 2
               - column:
                   name: name
                   value: Инструменты
@@ -27,17 +21,11 @@ databaseChangeLog:
             tableName: category
             columns:
               - column:
-                  name: id
-                  value: 3
-              - column:
                   name: name
                   value: Продукты
         - insert:
             tableName: category
             columns:
-              - column:
-                  name: id
-                  value: 4
               - column:
                   name: name
                   value: Прочее

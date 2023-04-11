@@ -1,14 +1,21 @@
+db:
+    schema: inventoryservice
 server:
     port: 8087
 spring:
     datasource:
         password: postgres
-        url: jdbc:postgresql://localhost/inventoryservice
+        url: jdbc:postgresql://localhost/postgres
         username: postgres
     jpa:
         generate-ddl: false
         hibernate:
-            ddl-auto: none
+            ddl-auto: validate
+        properties:
+            hibernate:
+                default_schema: ${db.schema}
         show-sql: true
     liquibase:
         change-log: classpath:changelog/db.changelog-master.yaml
+        defaultSchema: ${db.schema}
+        enabled: true

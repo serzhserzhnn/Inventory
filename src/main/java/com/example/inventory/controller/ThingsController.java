@@ -26,19 +26,19 @@ public class ThingsController {
     }
 
     @GetMapping("/thing/{id}")
-    public ResponseEntity<Things> getId(@PathVariable("id") int id) {
+    public ResponseEntity<Things> getId(@PathVariable("id") UUID id) {
         Optional<Things> thingData = thingsService.getId(id);
         return thingData.map(things -> new ResponseEntity<>(things, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(value = "/check_thing/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> chkId(@PathVariable("id") int id) {
+    public ResponseEntity<String> chkId(@PathVariable("id") UUID id) {
         Optional<Things> thingData = thingsService.getId(id);
         if (thingData.isPresent()) {
-            return new ResponseEntity<>("{\"check_thing\" : \"text-white\"}", HttpStatus.OK);
+            return new ResponseEntity<>("true", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("{\"check_thing\" : \"text-danger\"}", HttpStatus.OK);
+            return new ResponseEntity<>("false", HttpStatus.OK);
         }
     }
 
@@ -128,7 +128,7 @@ public class ThingsController {
     }
 
     @PutMapping("/thing/{id}")
-    public ResponseEntity<Things> update(@PathVariable("id") int id,
+    public ResponseEntity<Things> update(@PathVariable("id") UUID id,
                                          @RequestBody Things things) {
         try {
             if (thingsService.getId(id).isPresent()) {
@@ -143,7 +143,7 @@ public class ThingsController {
     }
 
     @DeleteMapping("/thing/{id}")
-    public ResponseEntity<HttpStatus> deleteThing(@PathVariable("id") int id) {
+    public ResponseEntity<HttpStatus> deleteThing(@PathVariable("id") UUID id) {
         try {
             thingsService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
