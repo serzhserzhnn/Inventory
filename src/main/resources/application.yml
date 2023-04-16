@@ -19,3 +19,8 @@ spring:
         change-log: classpath:changelog/db.changelog-master.yaml
         defaultSchema: ${db.schema}
         enabled: true
+    kafka:
+        producer:
+            bootstrap-servers: 127.0.0.1:9092
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.apache.kafka.common.serialization.StringSerializer

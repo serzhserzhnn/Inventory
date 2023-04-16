@@ -21,6 +21,13 @@ public class ThingsServiceImp implements ThingsService {
         this.thingsRepository = thingsRepository;
     }
 
+    SendService sendService;
+
+    @Autowired
+    private void setProducer(SendService sendService) {
+        this.sendService = sendService;
+    }
+
     @Override
     public Optional<Things> getId(UUID id) {
         return thingsRepository.findById(id);
@@ -57,7 +64,12 @@ public class ThingsServiceImp implements ThingsService {
 
     @Override
     public void update(Things things) {
-        thingsRepository.save(things);
+        // Обновляем запись в базе данных
+        Things updatedThing = thingsRepository.save(things);
+        // sending message to list-service
+        sendService.sendThingChange(updatedThing.getId(), "UPDATE", things.getDescription());
+        // Отправляем уведомление в кафку об изменении thing
+        sendService.sendStatusChange("updated", updatedThing);
     }
 
     @Override
