@@ -67,7 +67,9 @@ public class ThingsServiceImp implements ThingsService {
         // Обновляем запись в базе данных
         Things updatedThing = thingsRepository.save(things);
         // sending message to list-service
-        sendService.sendThingChange(updatedThing.getId(), "UPDATE", things.getDescription());
+        sendService.sendThingChange("UPDATE", updatedThing.getId(), updatedThing.getName(),
+                updatedThing.getDescription(), updatedThing.getLocation(), updatedThing.getCategory().toString(),
+                updatedThing.getQuantity(), updatedThing.getDateEnd().toString());
         // Отправляем уведомление в кафку об изменении thing
         sendService.sendStatusChange("updated", updatedThing);
     }

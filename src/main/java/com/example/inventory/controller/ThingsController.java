@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.*;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(value = "/inventory", consumes = MediaType.ALL_VALUE)
 public class ThingsController {
@@ -32,7 +32,7 @@ public class ThingsController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping(value = "/check_thing/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/check_thing/{id}")
     public ResponseEntity<String> chkId(@PathVariable("id") UUID id) {
         Optional<Things> thingData = thingsService.getId(id);
         if (thingData.isPresent()) {
@@ -120,7 +120,8 @@ public class ThingsController {
     @PostMapping("/thing_add")
     public ResponseEntity<Things> create(@Valid @RequestBody Things things) {
         try {
-            thingsService.create(new Things(things.getName(), things.getDescription(), things.getCategory()));
+            thingsService.create(new Things(things.getName(), things.getDescription(), things.getLocation(),
+                    things.getCategory(), things.getQuantity(), things.getDateEnd(), things.getUserId()));
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

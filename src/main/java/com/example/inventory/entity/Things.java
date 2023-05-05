@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -29,14 +30,19 @@ public class Things {
     private String location;
     private Integer category;
     private Integer quantity;
-    @Column(name = "date_start")
-    private String dateStart;
-    @Column(name = "date_end")
-    private String dateEnd;
+    @Column(name = "date_end", columnDefinition = "DATE")
+    private Date dateEnd;
+    @Column(name = "user_id")
+    private String userId;
 
-    public Things(String name, String description, Integer category) {
+    public Things(String name, String description, String location, Integer category,
+                  Integer quantity, Date dateEnd, String userId) {
         this.name = name;
         this.description = description;
+        this.location = location;
         this.category = category;
+        this.quantity = quantity;
+        this.dateEnd = dateEnd;
+        this.userId = userId;
     }
 }

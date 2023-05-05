@@ -21,12 +21,19 @@ public class SendServiceImp implements SendService {
     }
 
     @Override
-    public void sendThingChange(UUID id, String action, String description) {
+    public void sendThingChange(String action, UUID id, String name,
+                 String location, String description, String category,
+                         Integer quantity, String dateEnd) {
 
         JSONObject message = new JSONObject();
-        message.put("id", id);
+        message.put("id", id.toString());
         message.put("operation", action);
         message.put("description", description);
+        message.put("name", name);
+        message.put("location", location);
+        message.put("category", category);
+        message.put("quantity", quantity);
+        message.put("dateEnd", dateEnd);
 
         System.out.println("[ThingServiceImpl] Sending message to topic '" + THING_CHANGE_TOPIC + "' message=" + message);
         producer.sendMessage(THING_CHANGE_TOPIC, message.toJSONString());
