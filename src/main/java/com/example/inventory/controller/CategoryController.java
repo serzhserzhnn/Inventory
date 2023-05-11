@@ -1,7 +1,9 @@
 package com.example.inventory.controller;
 
+import com.example.inventory.dto.CategoryDTO;
 import com.example.inventory.entity.Category;
 import com.example.inventory.service.CategoryService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,13 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    ModelMapper modelMapper;
+
+    @Autowired
+    private void setModelMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
     /**
      * Запрос списка категорий
      *
@@ -38,7 +47,6 @@ public class CategoryController {
     @GetMapping(value = "/allCategory", produces = "application/json;charset=UTF-8")
     public ResponseEntity<List<Category>> getCategories() {
         try {
-
             List<Category> categoryList = new ArrayList<>(categoryService.getCategories());
             if (categoryList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -60,8 +68,9 @@ public class CategoryController {
     }
 
     @PostMapping("/category")
-    public ResponseEntity<Category> create(@Valid @RequestBody Category category) {
+    public ResponseEntity<Category> create(@Valid @RequestBody CategoryDTO categoryDTO) {
         try {
+            Category category = convertToEntity(categoryDTO);
             categoryService.create(new Category(category.getName()));
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
@@ -71,8 +80,9 @@ public class CategoryController {
 
     @PutMapping("/category/{id}")
     public ResponseEntity<Category> update(@PathVariable("id") int id,
-                                           @Valid @RequestBody Category category) {
+                                           @Valid @RequestBody CategoryDTO categoryDTO) {
         if (categoryService.getId(id).isPresent()) {
+            Category category = convertToEntity(categoryDTO);
             categoryService.update(category);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -88,5 +98,9 @@ public class CategoryController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private Category convertToEntity(CategoryDTO categoryDTO) {
+        return modelMapper.map(categoryDTO, Category.class);
     }
 }

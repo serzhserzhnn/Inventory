@@ -1,7 +1,9 @@
 package com.example.inventory.controller;
 
+import com.example.inventory.dto.ThingsDTO;
 import com.example.inventory.entity.Things;
 import com.example.inventory.service.ThingsService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +25,13 @@ public class ThingsController {
     @Autowired
     private void setThingsService(ThingsService thingsService) {
         this.thingsService = thingsService;
+    }
+
+    ModelMapper modelMapper;
+
+    @Autowired
+    private void setModelMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/thing/{id}")
@@ -118,8 +127,9 @@ public class ThingsController {
     }
 
     @PostMapping("/thing_add")
-    public ResponseEntity<Things> create(@Valid @RequestBody Things things) {
+    public ResponseEntity<Things> create(@Valid @RequestBody ThingsDTO thingsDTO) {
         try {
+            Things things = convertToEntity(thingsDTO);
             thingsService.create(new Things(things.getName(), things.getDescription(), things.getLocation(),
                     things.getCategory(), things.getQuantity(), things.getDateEnd(), things.getUserId()));
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -130,8 +140,9 @@ public class ThingsController {
 
     @PutMapping("/thing/{id}")
     public ResponseEntity<Things> update(@PathVariable("id") UUID id,
-                                         @RequestBody Things things) {
+                                         @Valid @RequestBody ThingsDTO thingsDTO) {
         try {
+            Things things = convertToEntity(thingsDTO);
             if (thingsService.getId(id).isPresent()) {
                 thingsService.update(things);
                 return new ResponseEntity<>(HttpStatus.OK);
@@ -151,5 +162,9 @@ public class ThingsController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private Things convertToEntity(ThingsDTO thingsDTO) {
+        return modelMapper.map(thingsDTO, Things.class);
     }
 }
