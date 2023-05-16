@@ -126,6 +126,17 @@ public class ThingsController {
         }
     }
 
+    @GetMapping(value = "/things/category_count/{category}", produces = "application/json;charset=UTF-8")
+    public ResponseEntity<List<Things>> getCategoryCount(@PathVariable("category") int category) {
+        try {
+            List<Things> thingsList = new ArrayList<>(thingsService.getAllByCategory(category));
+
+            return new ResponseEntity<>(thingsList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/thing_add")
     public ResponseEntity<Things> create(@Valid @RequestBody ThingsDTO thingsDTO) {
         try {

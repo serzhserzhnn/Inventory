@@ -49,6 +49,11 @@ public class ThingsServiceImp implements ThingsService {
     }
 
     @Override
+    public List<Things> getAllByCategory(int category) {
+        return thingsRepository.findAllByCategory(category);
+    }
+
+    @Override
     public Page<Things> findByNameContaining(String name, Pageable paging) {
         return thingsRepository.findByNameContainingIgnoreCase(name, paging);
     }

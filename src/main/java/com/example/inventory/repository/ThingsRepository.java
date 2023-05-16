@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface ThingsRepository extends JpaRepository<Things, UUID> {
@@ -14,5 +15,7 @@ public interface ThingsRepository extends JpaRepository<Things, UUID> {
     Page<Things> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
     Page<Things> findAllByCategory(Integer category, Pageable pageable);
+
+    List<Things> findAllByCategory(Integer category);
 }
 

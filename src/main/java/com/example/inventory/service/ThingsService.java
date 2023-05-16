@@ -19,6 +19,8 @@ public interface ThingsService {
 
     Page<Things> findAllByCategory(int category, Pageable paging);
 
+    List<Things> getAllByCategory(int category);
+
     Page<Things> findSearchCategory(Integer category, String name, Pageable paging);
 
     void create(Things things);
