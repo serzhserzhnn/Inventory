@@ -35,7 +35,6 @@ public class SendServiceImp implements SendService {
         message.put("quantity", quantity);
         message.put("dateEnd", dateEnd);
 
-        System.out.println("[ThingServiceImpl] Sending message to topic '" + THING_CHANGE_TOPIC + "' message=" + message);
         producer.sendMessage(THING_CHANGE_TOPIC, message.toJSONString());
     }
 
@@ -50,7 +49,6 @@ public class SendServiceImp implements SendService {
                 .append(", ")
                 .append(things.toString());
 
-        System.out.println("[ThingServiceImpl] Sending message to topic '" + STATUS_CHANGE_TOPIC + "' message=" + message);
         producer.sendMessage(STATUS_CHANGE_TOPIC, message.toString());
     }
 }
